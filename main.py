@@ -43,7 +43,7 @@ class App(ctk.CTk):
 
         self.add_toDo_Btn = ctk.CTkButton(self.main_frame, text="Ajouter une tâche", width=300, height=70, command= self.afficher_ajouter_toDo, font=ctk.CTkFont(size=14, weight="bold"))
         self.add_toDo_Btn.pack(pady=10)
-        self.show_toDo_Btn = ctk.CTkButton(self.main_frame, text="Afficher les tâches", width=300, height=70, command= self.show_toDo, font=ctk.CTkFont(size=14, weight="bold"))
+        self.show_toDo_Btn = ctk.CTkButton(self.main_frame, text="Afficher les tâches", width=300, height=70, command= self.afficher_liste, font=ctk.CTkFont(size=14, weight="bold"))
         self.show_toDo_Btn.pack(pady=10)
 
     def afficher_ajouter_toDo(self):
@@ -69,11 +69,14 @@ class App(ctk.CTk):
 
         self.titreShowTD = ctk.CTkLabel(self.main_frame, text="Tâches en cours", font=ctk.CTkFont(size=28, weight="bold"))
         self.titreShowTD.pack(pady=20)
-        self.menu_déroulant = ctk.CTkScrollableFrame(self.main_frame, width=500, height=300, label_text="Liste des tâches")
+        self.menu_déroulant = ctk.CTkScrollableFrame(self.main_frame, width=750, height=500, label_text="Liste des tâches")
         self.menu_déroulant.pack(pady=10)
 
-        for user in tasksList:
-            self.btnTD = ctk.CTkButton(self.menu_déroulant, text=f"")
+        for task in tasksList:
+            self.btnTD = ctk.CTkButton(self.menu_déroulant, text=f"{task["nom"]} (avant le {task["échéance"]})\n{task["priorité"]}, {task["statut"]}", width=700, height=70, font=ctk.CTkFont(size=18))
+            self.btnTD.pack(pady=10)
+
+    # -- Logique --
 
     def add_toDo(self):
         taskName = self.task_name.get()
@@ -83,11 +86,7 @@ class App(ctk.CTk):
 
         tasksList.append({"nom":taskName, "priorité": prio, "statut": stat, "échéance":date})
 
-        print(taskName, prio, stat, date)
-
-    def show_toDo(self):
-        pass
-
+        print(tasksList)
 
 app = App()
 app.mainloop()
