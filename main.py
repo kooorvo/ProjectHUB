@@ -55,11 +55,15 @@ class App(ctk.CTk):
         self.priority.pack(pady=10)
         self.status = ctk.CTkComboBox(self.main_frame, values=["Pas commencée", "En cours", "Finie"], width=300, height=70, font=ctk.CTkFont(size=14, weight="bold"))
         self.status.pack(pady=10)
-        self.datePicker
-
+        self.datePicker = CTkDatePicker(self.main_frame, width=300, height=70)
+        self.datePicker.set_allow_manual_input(False)
+        self.datePicker.set_date_format("%d-%m-%Y")
+        self.datePicker.pack(pady=10)
+        self.confirmBtn = ctk.CTkButton(self.main_frame, text="Ajouter", font=ctk.CTkFont(size=28, weight="bold"), width=300, height=70, command=self.add_toDo)
+        self.confirmBtn.pack(pady=10)
 
     def add_toDo(self):
-        pass
+        print("ok")
 
     def show_toDo(self):
         pass
