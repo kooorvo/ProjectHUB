@@ -2,6 +2,7 @@ import customtkinter as ctk
 from ctk_date_picker import CTkDatePicker
 
 tasksList = []
+projectsList = []
 
 class App(ctk.CTk):
     def __init__(self):
@@ -17,12 +18,14 @@ class App(ctk.CTk):
         # -- Sidebar --
         self.sidebar_frame = ctk.CTkFrame(self, width=200, corner_radius=10)
         self.sidebar_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
-        self.sidebar_frame.grid_rowconfigure(2, weight=1)
+        self.sidebar_frame.grid_rowconfigure(3, weight=1)
 
-        self.wnTitle = ctk.CTkLabel(self.sidebar_frame, text="ProjectHUB", font=ctk.CTkFont(size=24, weight="bold"))
+        self.wnTitle = ctk.CTkLabel(self.sidebar_frame, text="ProjectHUB (v.0.1)", font=ctk.CTkFont(size=24, weight="bold"))
         self.wnTitle.grid(row=0, column=0, padx=20, pady=(20, 10))
         self.toDoBtn = ctk.CTkButton(self.sidebar_frame, text="To do list", command=self.afficher_toDo, width=190, height=50, font=ctk.CTkFont(size=14, weight="bold"))
         self.toDoBtn.grid(row=1, column=0, padx=20, pady=10)
+        self.projectBtn = ctk.CTkButton(self.sidebar_frame, text="Projets", width=190, height=50, font=ctk.CTkFont(size=14, weight="bold"), command=self.afficherProjets)
+        self.projectBtn.grid(row=2, column=0, padx=20, pady=10)
 
         # -- Main frame --
 
@@ -34,6 +37,8 @@ class App(ctk.CTk):
     def nettoyer_main_frame(self):
         for widget in self.main_frame.winfo_children():
             widget.destroy()
+
+    # To do list
 
     def afficher_toDo(self):
         self.nettoyer_main_frame()
@@ -76,6 +81,40 @@ class App(ctk.CTk):
             self.btnTD = ctk.CTkButton(self.menu_déroulant, text=f"{task["nom"]} (avant le {task["échéance"]})\n{task["priorité"]}, {task["statut"]}", width=700, height=70, font=ctk.CTkFont(size=18))
             self.btnTD.pack(pady=10)
 
+    # Projets
+
+    def afficherProjets(self):
+        self.nettoyer_main_frame()
+        
+        titre = ctk.CTkLabel(self.main_frame, text="Projets", font=ctk.CTkFont(size=28, weight="bold"))
+        titre.pack(pady=20)
+        addProject = ctk.CTkButton(self.main_frame, text="Ajouter un projet", width=300, height=70, command= self.afficher_ajouter_projet, font=ctk.CTkFont(size=14, weight="bold"))
+        addProject.pack(pady=10)
+        myProject = ctk.CTkButton(self.main_frame, text="Mes projets", width=300, height=70, command= self.afficher_projets, font=ctk.CTkFont(size=14, weight="bold"))
+        myProject.pack(pady=10)
+
+    def afficher_ajouter_projet(self):
+        self.nettoyer_main_frame()
+
+        titre = ctk.CTkLabel(self.main_frame, text="Ajouter un projet", font=ctk.CTkFont(size=28, weight="bold"))
+        titre.pack(pady=20)
+        self.projectName = ctk.CTkEntry(self.main_frame, placeholder_text="Ajouter un projet", font=ctk.CTkFont(size=14, weight="bold"), width=300, height=70)
+        self.projectName.pack(pady=10)
+        self.typeProj = ctk.CTkComboBox(self.main_frame, values=["ProjectHUB", "Youtube", "Autre"], width=300, height=70, font=ctk.CTkFont(size=14, weight="bold"))
+        self.typeProj.pack(pady=10)
+        self.confirmBtnProj = ctk.CTkButton(self.main_frame, text="Ajouter", font=ctk.CTkFont(size=28, weight="bold"), width=300, height=70, command=self.add_project)
+        self.confirmBtnProj.pack(pady=10)
+
+    def afficher_projets(self):
+        self.nettoyer_main_frame()
+
+        titre = ctk.CTkLabel(self.main_frame, text="Tâches en cours", font=ctk.CTkFont(size=28, weight="bold"))
+        titre.pack(pady=20)
+
+        for proj in projectsList:
+            self.btnTD = ctk.CTkButton(self.main_frame, text=f"{proj["nom"]}\n{proj["catégorie"]}", width=700, height=70, font=ctk.CTkFont(size=18))
+            self.btnTD.pack(pady=10)
+        
     # -- Logique --
 
     def add_toDo(self):
@@ -87,6 +126,12 @@ class App(ctk.CTk):
         tasksList.append({"nom":taskName, "priorité": prio, "statut": stat, "échéance":date})
 
         print(tasksList)
+
+    def add_project(self):
+        projName = self.projectName.get()
+        type = self.typeProj.get()
+
+        projectsList.append({"nom":projName, "catégorie":type})
 
 app = App()
 app.mainloop()
