@@ -1,6 +1,8 @@
 import customtkinter as ctk
 from ctk_date_picker import CTkDatePicker
 
+tasksList = []
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -47,8 +49,8 @@ class App(ctk.CTk):
     def afficher_ajouter_toDo(self):
         self.nettoyer_main_frame()
 
-        self.titre = ctk.CTkLabel(self.main_frame, text="Ajouter une tâche", font=ctk.CTkFont(size=28, weight="bold"))
-        self.titre.pack(pady=20)
+        self.titreAddTD = ctk.CTkLabel(self.main_frame, text="Ajouter une tâche", font=ctk.CTkFont(size=28, weight="bold"))
+        self.titreAddTD.pack(pady=20)
         self.task_name = ctk.CTkEntry(self.main_frame, placeholder_text="Nom de la tâche :", width=300, height=70, font=ctk.CTkFont(size=14, weight="bold"))
         self.task_name.pack(pady=10)
         self.priority = ctk.CTkComboBox(self.main_frame, values=["Priorité haute", "Priorité moyenne", "Priorité basse"], width=300, height=70, font=ctk.CTkFont(size=14, weight="bold"))
@@ -62,8 +64,26 @@ class App(ctk.CTk):
         self.confirmBtn = ctk.CTkButton(self.main_frame, text="Ajouter", font=ctk.CTkFont(size=28, weight="bold"), width=300, height=70, command=self.add_toDo)
         self.confirmBtn.pack(pady=10)
 
+    def afficher_liste(self):
+        self.nettoyer_main_frame()
+
+        self.titreShowTD = ctk.CTkLabel(self.main_frame, text="Tâches en cours", font=ctk.CTkFont(size=28, weight="bold"))
+        self.titreShowTD.pack(pady=20)
+        self.menu_déroulant = ctk.CTkScrollableFrame(self.main_frame, width=500, height=300, label_text="Liste des tâches")
+        self.menu_déroulant.pack(pady=10)
+
+        for user in tasksList:
+            self.btnTD = ctk.CTkButton(self.menu_déroulant, text=f"")
+
     def add_toDo(self):
-        print("ok")
+        taskName = self.task_name.get()
+        prio = self.priority.get()
+        stat = self.status.get()
+        date = self.datePicker.get_date()
+
+        tasksList.append({"nom":taskName, "priorité": prio, "statut": stat, "échéance":date})
+
+        print(taskName, prio, stat, date)
 
     def show_toDo(self):
         pass
