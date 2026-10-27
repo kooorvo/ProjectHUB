@@ -1,6 +1,7 @@
 import customtkinter as ctk
-from ctk_date_picker import CTkDatePicker
+from scripts.ctk_date_picker import CTkDatePicker
 
+from taskManager import creer_tache
 tasksList = []
 projectsList = []
 
@@ -123,7 +124,7 @@ class App(ctk.CTk):
         stat = self.status.get()
         date = self.datePicker.get_date()
 
-        tasksList.append({"nom":taskName, "priorité": prio, "statut": stat, "échéance":date})
+        tasksList.append(creer_tache(taskName, prio, stat, date))
 
         print(tasksList)
 
